@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+<body>
+
+
+<h1>Voting Page</h1>
+
+
+<h3 id="dialogText4" >Please fill in the details by selecting your name and the fruit you whish to vote for by using the drop down list. </h3>
+<h3 id="dialogText5" >This will fill in the input text box for you.</h3>
+<h3 id="dialogText6" >Then press the vote button.</h3>
+
+
+
+<form onsubmit="myFunction(this.value)">
+ <br>Name: <br>
+  <input type="text" id="Name" name="name" required readonly/>
+ 
+ <br>Fruit: <br>
+  <input type="text" id="Fruit" name="name" required readonly/>
+
+</form>
+
+ <br>Name: <br>
+	<select name = "navyOp2" onChange="myFunction2()"> 
+  <option value="Jane">Jane</option>
+  <option value="John">John</option>
+  <option value="Mike">Mike</option>
+  <option value="Paul">Paul</option>
+  </select>
+
+
+ <br>Fruit: <br>
+  <select name = "navyOp1" onChange="myFunction1()"> 
+  <option value="Apple">Apple</option>
+  <option value="Banana">Banana</option>
+  <option value="Orange">Orange</option>
+  <option value="Pineapple" selected>Pineapple</option>
+  </select>
+  
+
+
+
+</div>
+
+<br>
+<br>
+
+<button type="button" onclick="loadDoc()">Vote</button>
+<p id="demo">Status</p>
+
+<br>
+<br>
+
+<a href="http://nelsonbastiaanvermeer.com/voting_app/ItemANDStudent_Select.php">The votes for the fruit and who voted for which fruit </a>
+
+
+
+<script>
+
+
+var myDropdown1=document.getElementsByName('navyOp1')[0];
+
+
+
+function myFunction1(){
+
+document.getElementById("Fruit").value = myDropdown1.value;
+
+    //alert('option changed : '+ myDropdown1.value);
+}
+
+var myDropdown2=document.getElementsByName('navyOp2')[0];
+
+function myFunction2(){
+
+document.getElementById("Name").value = myDropdown2.value;
+
+    //alert('option changed : '+ myDropdown2.value);
+}
+
+window.Fruit = document.getElementById("Fruit").value;
+window.Name = document.getElementById("Name").value;
+
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $http) {
+
+  $http.get("Item_Update.php?Item=Apple&Vote=" + '30')
+  
+  
+  .then(function(response) {
+      $scope.myWelcome = response.data;
+  });
+});
+
+function loadDoc() {
+window.Fruit = document.getElementById("Fruit").value;
+window.Name = document.getElementById("Name").value;
+
+if(window.Fruit == "" || window.Name == "")
+{
+alert('Please select so both input forms are filled in');
+}
+else
+{
+  var xhttp;
+  if (window.XMLHttpRequest) {
+    // code for modern browsers
+    xhttp = new XMLHttpRequest();
+    } else {
+    // code for IE6, IE5
+    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML = this.responseText;
+    }
+  };
+
+  xhttp.open("GET", "ItemAndStudent_Update.php?Item=" + window.Fruit + "&Vote='1'&Name=" + window.Name, true);  
+
+  
+  xhttp.send();
+}
+
+
+  
+  
+}
+
+function UpDate(){
+
+}
+
+
+</script>
+
+</body>
+</html>
